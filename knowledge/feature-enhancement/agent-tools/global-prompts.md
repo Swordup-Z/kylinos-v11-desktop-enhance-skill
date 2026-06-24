@@ -64,6 +64,7 @@ $HOME/.agents/skills/<skill-name>/SKILL.md
 - 问题确认修复完成后，主动判断是否产生新的可复用诊断步骤、修复步骤、风险点或系统特性；有则立即更新到 `$HOME/.os-fix-skill/SKILL.md`、对应 `references/system-repair/` 路由，以及 `knowledge/system-repair/` 章节。
 - 功能增强确认完成后，主动判断是否产生新的可复用增强步骤、前置检查、回滚方式、验证步骤、风险边界或系统特性；有则立即更新到 `$HOME/.os-enhance-skill/SKILL.md`、对应 `references/feature-enhancement/` 路由，以及 `knowledge/feature-enhancement/` 章节。
 - 执行任何 `git commit` 时，提交作者、提交正文和提交 trailer 不得包含 AI 相关署名或协作生成信息，例如 `Co-authored-by: Claude`、`Co-authored-by: Codex`、`Generated with ...`、`AI-assisted`、`🤖` 等。
+- 执行任何项目或 skill 仓库的 `git commit` 后，必须在同一工作流程中 `git push` 到配置好的远端，并验证远端分支已更新；除非用户明确要求只本地提交或当前网络/权限不可用。
 - 最终回复中说明本次经验是否已记录；如果已记录，给出对应 skill 文档路径；如果没有记录，说明原因是没有新增可复用经验。
 - 经验文档使用中文。避免写入当前用户专属路径、用户名或一次性状态；需要出现用户目录时使用 `$HOME`、`<user>`、`<app-id>`、`<desktop-id>` 等通用占位符。
 ```
@@ -88,7 +89,8 @@ https://github.com/Swordup-Z/kylinos-v11-desktop-fix-skill
 5. 系统级修复或增强前必须先运行 mm-cli -s 检查维护模式；非维护模式只允许诊断，不要实际修改 /usr、/etc、/opt、系统包、系统服务、设备节点、分区或 KSaf 策略。
 6. 修复确认完成后，如有新增可复用经验，更新到 $HOME/.os-fix-skill；增强确认完成后，如有新增可复用经验，更新到 $HOME/.os-enhance-skill。
 7. 执行任何 git commit 时，提交作者、提交正文和提交 trailer 不得包含 AI 相关署名或协作生成信息。
-8. 安装完成后验证：分别读取 $HOME/.os-fix-skill/SKILL.md 和 $HOME/.os-enhance-skill/SKILL.md，并告诉我后续处理修复类和增强类 KylinOS Desktop V11 系统问题时分别会先使用哪个 skill 入口。
+8. 执行任何项目或 skill 仓库的 git commit 后，必须在同一工作流程中 git push 到配置好的远端，并验证远端分支已更新；除非用户明确要求只本地提交或当前网络/权限不可用。
+9. 安装完成后验证：分别读取 $HOME/.os-fix-skill/SKILL.md 和 $HOME/.os-enhance-skill/SKILL.md，并告诉我后续处理修复类和增强类 KylinOS Desktop V11 系统问题时分别会先使用哪个 skill 入口。
 ```
 
 Codex：
