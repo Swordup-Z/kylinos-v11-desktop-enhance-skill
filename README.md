@@ -2,9 +2,9 @@
 
 [English](README.en.md)
 
-这是一个面向 KylinOS Desktop V11 的系统功能增强经验库，用来沉淀桌面系统原本能工作、但需要新增能力、改变默认行为、本地客制化或源码级功能增强时的可复用流程。它不是可执行程序，也不绑定某个 AI 工具的内置 skill 目录，而是一组给人和多个 AI 工具共同使用的结构化知识：人按目录查找经验，AI 工具从 `$HOME/.os-enhance-skill/SKILL.md` 开始按需渐进式读取。
+这是一个面向 KylinOS Desktop V11 的系统功能增强经验库，用来沉淀桌面系统原本能工作、但需要新增能力、改变默认行为、本地客制化或源码级功能增强时的可复用流程。它不是可执行程序，也不绑定某个工具的内置目录；入口文件为 `$HOME/.os-enhance-skill/SKILL.md`，详细内容按 `references/` 和 `knowledge/` 渐进展开。
 
-当前内容覆盖 UKUI 全局搜索、搜索引擎、自定义命令、托盘状态角标、AI 工具全局提示词、Codex 用户级配置、DATA 工作区、本地源码客制化、源码 patch 保存、构建与回滚策略等场景。
+内容覆盖 UKUI 全局搜索、搜索引擎、自定义命令、托盘状态角标、工具全局规则、Codex 用户级配置、DATA 工作区、本地源码客制化、源码 patch 保存、构建与回滚策略等场景。
 
 系统已有能力异常、失效、报错、不能持久化、安装失败或系统服务损坏的修复流程属于 `$HOME/.os-fix-skill`。
 
@@ -73,46 +73,26 @@ opencode
 
 ## 安装本经验库
 
-### 方式一：让 AI 工具安装
-
-把下面这段话发给 Codex、Claude Code、opencode 等工具即可：
-
-```text
-请安装这个 KylinOS Desktop V11 系统功能增强经验库：
-
-https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill
-
-要求：
-1. 将仓库克隆到 $HOME/.os-enhance-skill。
-2. 根据当前工具类型，把全局提示词配置到用户级文件，例如：
-   - Codex: $HOME/.codex/AGENTS.md
-   - Claude Code: $HOME/.claude/CLAUDE.md
-   - opencode: $HOME/.config/opencode/AGENTS.md
-3. 当用户处理系统功能增强、本地客制化、默认行为调整、AI 工具配置、UKUI 行为扩展、应用安装体验、网络策略、存储策略、硬件能力增强或源码级功能增强时，先读取 $HOME/.os-enhance-skill/SKILL.md，再按里面的 references 路由继续读取。
-4. 当用户处理 KylinOS Desktop V11、UKUI、KARE/Kaiming、Clash Verge、TUN、维护模式、磐石架构、系统服务、分区挂载、AI 子系统等桌面系统修复问题时，不使用本仓库，应切换到对应的修复经验库。
-5. 配置完成后告诉我入口文件路径和后续如何使用。
-```
-
-### 方式二：手动安装
-
 ```bash
 cd "$HOME"
 git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
 ```
 
-入口文件：
+入口文件是：
 
 ```text
 $HOME/.os-enhance-skill/SKILL.md
 ```
 
-常见 AI 工具的用户级提示词位置：
+常见工具的用户级规则文件位置：
 
 ```text
 Codex:       $HOME/.codex/AGENTS.md
 Claude Code: $HOME/.claude/CLAUDE.md
 opencode:    $HOME/.config/opencode/AGENTS.md
 ```
+
+把这些规则文件接入本经验库后，KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、工具配置或源码级功能增强可从 `$HOME/.os-enhance-skill/SKILL.md` 进入，再按其中的 `references/feature-enhancement/` 路由继续查阅。系统修复问题由 `$HOME/.os-fix-skill` 维护。
 
 系统增强使用固定会话名，例如 `os-enhance`。之后遇到系统增强任务时，恢复同一个会话继续处理：
 
@@ -124,7 +104,7 @@ opencode resume os-enhance
 
 ## 整体架构
 
-当前 skill 只保留系统功能增强：系统原本能工作，但用户需要新增能力、改变默认行为、本地客制化或沉淀可复用增强流程。例如给 UKUI 全局搜索增加 Bing/Google、自定义命令面板、托盘输入法状态角标、保存本地源码 patch、配置 AI 工具全局提示词。
+本仓库面向系统功能增强场景：系统原本能工作，但用户需要新增能力、改变默认行为、本地客制化或沉淀可复用增强流程。例如给 UKUI 全局搜索增加 Bing/Google、自定义命令面板、托盘输入法状态角标、保存本地源码 patch、配置工具全局规则。
 
 增强内容按场景分类：
 
@@ -224,7 +204,7 @@ SKILL.md
 
 ## 当前覆盖范围
 
-- AI 工具全局提示词、Codex 用户级配置、full access 权限边界和多工具加载规则。
+- 工具全局规则、Codex 用户级配置、full access 权限边界和多工具加载规则。
 - UKUI 全局搜索搜索引擎增强。
 - UKUI 全局搜索自定义命令 provider 和图形化命令配置。
 - UKUI 托盘输入法状态角标等桌面交互增强。
@@ -259,13 +239,13 @@ sudo mm-cli -c -a
 
 ## 独立工具
 
-空间清理、Kaiming/KARE 应用层治理、ostree 占用审计、桌面自动化操作等任务建议使用独立应用承载，而不是把大段脚本或项目开发要求直接塞进 knowledge。若本机存在独立开发工作区，优先从项目目录读取项目级提示词：
+空间清理、Kaiming/KARE 应用层治理、ostree 占用审计、桌面自动化操作等任务适合由独立应用承载。若本机存在独立开发工作区，可从工作区规则文件进入：
 
 ```text
 $HOME/desktop-develop/AGENTS.md
 ```
 
-本 skill 只保留增强策略、安全边界和可复用经验；具体 UI、构建、验证、依赖选择和项目实现规则应维护在独立项目内。工具类项目仍必须遵守系统安全边界：不得自动删除 ostree deployment、EFI、GRUB、loader entries、`/etc/fstab` 或分区表。
+本仓库记录增强策略、安全边界和可复用经验；具体 UI、构建、验证、依赖选择和项目实现规则应维护在独立项目内。工具类项目仍必须遵守系统安全边界：不得自动删除 ostree deployment、EFI、GRUB、loader entries、`/etc/fstab` 或分区表。
 
 如果使用本机的开发工作区，入口通常是：
 

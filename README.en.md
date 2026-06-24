@@ -2,9 +2,9 @@
 
 [中文](README.md)
 
-This repository is a structured feature-enhancement knowledge base for KylinOS Desktop V11. It records reusable workflows for desktop-system capabilities that already work but need new behavior, changed defaults, local customization, or source-level enhancement. It is not an executable program and is not tied to one AI tool's built-in skill directory. Humans can browse the directories directly, and multiple AI tools can start from `$HOME/.os-enhance-skill/SKILL.md` and progressively load only the relevant references.
+This repository is a structured feature-enhancement knowledge base for KylinOS Desktop V11. It records reusable workflows for desktop-system capabilities that already work but need new behavior, changed defaults, local customization, or source-level enhancement. It is not an executable program and is not tied to one tool's built-in directory. The entry file is `$HOME/.os-enhance-skill/SKILL.md`; detailed content is organized under `references/` and `knowledge/`.
 
-It currently covers UKUI global search, search engines, custom commands, tray status badges, AI-tool global prompts, Codex user-level configuration, DATA workspaces, local source customization, source patch preservation, build workflows, and rollback strategy.
+It covers UKUI global search, search engines, custom commands, tray status badges, tool global rules, Codex user-level configuration, DATA workspaces, local source customization, source patch preservation, build workflows, and rollback strategy.
 
 Existing behavior failures, errors, broken persistence, installation failures, or damaged system services belong in `$HOME/.os-fix-skill`.
 
@@ -73,28 +73,6 @@ If your system policy does not allow `curl | sh` or `curl | bash`, open the offi
 
 ## Install This Knowledge Base
 
-### Option 1: Ask an AI Tool to Install It
-
-Send this prompt to Codex, Claude Code, opencode, or a similar tool:
-
-```text
-Please install this KylinOS Desktop V11 feature-enhancement knowledge base:
-
-https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill
-
-Requirements:
-1. Clone it to $HOME/.os-enhance-skill.
-2. Configure the user-level global prompt for the current tool, for example:
-   - Codex: $HOME/.codex/AGENTS.md
-   - Claude Code: $HOME/.claude/CLAUDE.md
-   - opencode: $HOME/.config/opencode/AGENTS.md
-3. When the user works on feature enhancement, local customization, default-behavior changes, AI-tool configuration, UKUI behavior extension, application installation experience, network policy, storage strategy, hardware capability enhancement, or source-level feature enhancement, first read $HOME/.os-enhance-skill/SKILL.md, then follow its references routing.
-4. When the user works on KylinOS Desktop V11, UKUI, KARE/Kaiming, Clash Verge, TUN, maintenance mode, the PanShi architecture, system services, partitions, mounts, or desktop AI subsystem repair issues, do not use this repository; switch to the corresponding repair knowledge base.
-5. After installation, tell me the entry file path and how to use it later.
-```
-
-### Option 2: Manual Installation
-
 ```bash
 cd "$HOME"
 git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
@@ -106,13 +84,15 @@ Entry file:
 $HOME/.os-enhance-skill/SKILL.md
 ```
 
-Common user-level prompt files:
+Common user-level rule files:
 
 ```text
 Codex:       $HOME/.codex/AGENTS.md
 Claude Code: $HOME/.claude/CLAUDE.md
 opencode:    $HOME/.config/opencode/AGENTS.md
 ```
+
+After these rule files are connected to this knowledge base, KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, tool configuration, or source-level feature work can start from `$HOME/.os-enhance-skill/SKILL.md` and then follow `references/feature-enhancement/`. System repair issues are maintained in `$HOME/.os-fix-skill`.
 
 Use a fixed session name for system enhancement, such as `os-enhance`:
 
@@ -124,7 +104,7 @@ opencode resume os-enhance
 
 ## Architecture
 
-This skill only keeps system enhancement workflows: the system already works, but the user wants new capabilities, changed defaults, local customization, or reusable enhancement workflows. Examples include adding Bing/Google to UKUI global search, adding a custom command panel, adding tray input-method status badges, preserving local source patches, or configuring AI-tool global prompts.
+This repository focuses on system enhancement workflows: the system already works, but the user wants new capabilities, changed defaults, local customization, or reusable enhancement workflows. Examples include adding Bing/Google to UKUI global search, adding a custom command panel, adding tray input-method status badges, preserving local source patches, or configuring tool global rules.
 
 Enhancement content is grouped by scenario:
 
@@ -224,7 +204,7 @@ For repair tasks such as TUN failures, autostart not working, global-search erro
 
 ## Coverage
 
-- AI-tool global prompts, Codex user-level configuration, full-access permission boundaries, and multi-tool loading rules.
+- Tool global rules, Codex user-level configuration, full-access permission boundaries, and multi-tool loading rules.
 - UKUI global-search search-engine customization.
 - UKUI global-search custom command provider and graphical command configuration.
 - UKUI system-tray input-method status badges and similar desktop interaction enhancements.
@@ -259,13 +239,13 @@ Enhancement plans should prefer user-level configuration, reversible configurati
 
 ## Companion Tools
 
-Space cleanup, Kaiming/KARE layer control, ostree usage auditing, and desktop automation should live in companion applications instead of large embedded scripts or project-specific development requirements inside knowledge files. If a local development workspace exists, read the workspace prompt first:
+Space cleanup, Kaiming/KARE layer control, ostree usage auditing, and desktop automation are better handled by companion applications. If a local development workspace exists, start from the workspace rules:
 
 ```text
 $HOME/desktop-develop/AGENTS.md
 ```
 
-This skill keeps only enhancement strategy, safety boundaries, and reusable knowledge. Concrete UI, build, verification, dependency, and implementation rules belong in independent projects. Tool projects must still follow the system safety boundary: do not automatically delete ostree deployments, EFI files, GRUB config, loader entries, `/etc/fstab`, or partition tables.
+This repository records enhancement strategy, safety boundaries, and reusable knowledge. Concrete UI, build, verification, dependency, and implementation rules belong in independent projects. Tool projects must still follow the system safety boundary: do not automatically delete ostree deployments, EFI files, GRUB config, loader entries, `/etc/fstab`, or partition tables.
 
 On this machine, the usual development workspace entry is:
 
