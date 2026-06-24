@@ -71,44 +71,39 @@ opencode
 
 If your system policy does not allow `curl | sh` or `curl | bash`, open the official pages above and choose a standalone package, npm, or another trusted installation method for your Linux desktop environment.
 
-## Install The System Knowledge Bases
+## Install This Knowledge Base
 
 ### Option 1: Ask an AI Tool to Install It
 
 Send this prompt to Codex, Claude Code, opencode, or a similar tool:
 
 ```text
-Please install these KylinOS Desktop V11 system knowledge bases:
+Please install this KylinOS Desktop V11 feature-enhancement knowledge base:
 
-- Repair knowledge base: https://github.com/Swordup-Z/kylinos-v11-desktop-fix-skill
-- Feature-enhancement knowledge base: https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill
+https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill
 
 Requirements:
-1. Clone the repair knowledge base to $HOME/.os-fix-skill.
-2. Clone the feature-enhancement knowledge base to $HOME/.os-enhance-skill.
-3. Configure the user-level global prompt for the current tool, for example:
+1. Clone it to $HOME/.os-enhance-skill.
+2. Configure the user-level global prompt for the current tool, for example:
    - Codex: $HOME/.codex/AGENTS.md
    - Claude Code: $HOME/.claude/CLAUDE.md
    - opencode: $HOME/.config/opencode/AGENTS.md
-4. When the user works on KylinOS Desktop V11, UKUI, KARE/Kaiming, Clash Verge, TUN, maintenance mode, the PanShi architecture, system services, partitions, mounts, or desktop AI subsystem repair issues, first read $HOME/.os-fix-skill/SKILL.md, then follow its references routing.
-5. When the user works on feature enhancement, local customization, default-behavior changes, AI-tool configuration, UKUI behavior extension, application installation experience, network policy, storage strategy, hardware capability enhancement, or source-level feature enhancement, first read $HOME/.os-enhance-skill/SKILL.md, then follow its references routing.
-6. When the user works under $HOME/desktop-develop or /data/usershare/desktop-develop on an independent tool/application, first read that directory's AGENTS.md and follow the workspace or project-level routing; do not put project implementation requirements into either skill.
-7. After installation, tell me both entry file paths and how to use them later.
+3. When the user works on feature enhancement, local customization, default-behavior changes, AI-tool configuration, UKUI behavior extension, application installation experience, network policy, storage strategy, hardware capability enhancement, or source-level feature enhancement, first read $HOME/.os-enhance-skill/SKILL.md, then follow its references routing.
+4. When the user works on KylinOS Desktop V11, UKUI, KARE/Kaiming, Clash Verge, TUN, maintenance mode, the PanShi architecture, system services, partitions, mounts, or desktop AI subsystem repair issues, do not use this repository; switch to the corresponding repair knowledge base.
+5. After installation, tell me the entry file path and how to use it later.
 ```
 
 ### Option 2: Manual Installation
 
 ```bash
 cd "$HOME"
-git clone https://github.com/Swordup-Z/kylinos-v11-desktop-fix-skill.git "$HOME/.os-fix-skill"
 git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
 ```
 
-Entry files:
+Entry file:
 
 ```text
-Repair: $HOME/.os-fix-skill/SKILL.md
-Enhancement: $HOME/.os-enhance-skill/SKILL.md
+$HOME/.os-enhance-skill/SKILL.md
 ```
 
 Common user-level prompt files:
