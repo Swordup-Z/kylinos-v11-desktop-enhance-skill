@@ -10,6 +10,7 @@
 进入存储与工作区索引后，按 DATA 工作区、源码目录、patch、回滚分类或分区挂载策略选择具体知识。
 
 - [`../../knowledge/feature-enhancement/storage/README.md`](../../knowledge/feature-enhancement/storage/README.md)
+- KARE/Kaiming 空间清理策略、运行环境写入层候选判定、回滚隔离策略：读取 [`../../knowledge/feature-enhancement/storage/kare-kaiming-cleanup.md`](../../knowledge/feature-enhancement/storage/kare-kaiming-cleanup.md)。
 
 ## 最小诊断
 
