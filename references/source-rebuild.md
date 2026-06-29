@@ -12,6 +12,12 @@
 
 - [`../knowledge/source-rebuild/README.md`](../knowledge/source-rebuild/README.md)
 
+## 场景原则
+
+- 通过源码修改实现的增强必须保存 patch、构建条件、安装路径、回滚方式和清理方式；不要只记录一次性命令。
+- 如果只是需要保存本机继续定制的现场状态，优先读取 `knowledge/source-rebuild/local-customization-index.md`。
+- 如果 patch 具备跨机器或后续系统版本复用价值，再读取 `knowledge/source-rebuild/patch-library.md` 并沉淀 PATCHSET 元数据。
+
 | 子场景 | 快速判断 | 对应 knowledge |
 | --- | --- | --- |
 | 源码增强通用流程 | 需要判断是否必须源码级增强、维护模式、构建和安装安全边界 | `knowledge/source-rebuild/README.md` |
