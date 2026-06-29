@@ -7,7 +7,6 @@
 - Keep commit messages focused on the actual repository change.
 - Use git author `Swordup-Z <swordup.zeng@gmail.com>` when committing from this repository.
 - Before committing changes to this skill repository, check whether `README.md` and `README.en.md` need updates. If the change affects installation, supported enhancement coverage, reference entry points, safety boundaries, global prompts, or public usage workflow, update the READMEs in the same commit.
-- After a successful commit in this repository, automatically run `git push` unless the user explicitly asks not to. If push fails because of network, authentication, missing remote, branch divergence, or remote rejection, do not force push; report the reason.
 
 ## Documentation
 
