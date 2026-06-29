@@ -8,7 +8,22 @@
 - 使用者没有仓库写权限，或不确定本地改动是否适合直接上游化。
 - 本地已有修改会阻塞 `git pull --ff-only`，需要先把改动转为可管理 patch。
 
-拥有仓库写权限的开发者维护本仓库时，直接修改仓库文档并按当前开发环境的全局提示词或项目规则处理后续仓库维护；相关规则不写入面向普通使用者的 skill 规则。
+拥有仓库写权限的开发者维护本仓库时，先显式进入开发者维护模式。只有本地标记为维护者且 dry-run push 通过，才直接修改仓库文档、commit，并按当前开发环境的全局提示词或项目规则 push；否则仍走 sidecar patch，避免制造本地分叉。
+
+维护者检查命令：
+
+```bash
+skill_dir="$HOME/.os-enhance-skill"; if git -C "$skill_dir" push --dry-run --porcelain origin HEAD:refs/heads/main >/dev/null 2>&1; then git -C "$skill_dir" config --local osSkill.maintainer true; else git -C "$skill_dir" config --local --unset osSkill.maintainer 2>/dev/null || true; fi
+```
+
+后续沉淀经验前再确认：
+
+```bash
+test "$(git -C "$HOME/.os-enhance-skill" config --get osSkill.maintainer)" = true && \
+  git -C "$HOME/.os-enhance-skill" push --dry-run --porcelain origin HEAD:refs/heads/main >/dev/null
+```
+
+不要采用“无权限时先 commit、导出 patch、再 reset 到远端”的流程；不要自动切换开发分支保存普通使用者经验。这两种方式都会让普通使用者的 skill 仓库更容易偏离上游。
 
 ## 存放位置
 

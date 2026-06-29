@@ -12,7 +12,7 @@
 
 ## 设计原则
 
-- 全局提示词只做轻量路由：识别问题域、要求先读取 skill 入口、按需读取引用文档，并区分普通使用者本地 patch 与开发者仓库维护。
+- 全局提示词只做轻量路由：识别问题域、要求先读取 skill 入口、按需读取引用文档，并区分普通使用者本地 patch 与通过 dry-run push 检查的开发者维护模式。
 - 系统已有能力异常、失效、报错、不能持久化、安装失败或系统服务损坏时，加载 `$HOME/.os-fix-skill/SKILL.md`。
 - 系统原本能工作，但需要新增能力、改变默认行为、本地客制化、AI 工具配置增强或源码级功能增强时，加载 `$HOME/.os-enhance-skill/SKILL.md`。
 - fix skill 和 enhance skill 是两个独立经验库；当前增强经验库安装流程只负责 `$HOME/.os-enhance-skill/`，修复经验库按其自身说明单独安装。文档内部使用 `$HOME`、`<user>`、`<app-id>` 等占位符，不写死具体用户名。
@@ -61,8 +61,8 @@ $HOME/.agents/skills/<skill-name>/SKILL.md
 - 如果当前不是维护模式，不要继续系统级修复或增强。应让用户执行 `sudo mm-cli -o`，或在用户授权后执行 `pkexec mm-cli -o`；随后提醒用户重启系统，重启后重新打开当前 AI 工具再继续。
 - 切换维护模式并重启前，只允许做诊断、读取状态、模拟安装/卸载等非破坏操作；不要执行实际安装、卸载、写系统路径或改系统服务。
 - 不要删除、移动或覆盖用户已有的可执行文件、配置文件、订阅文件、代理核心、systemd 单元或用户数据，除非用户明确要求且已验证影响。
-- 问题确认修复完成后，主动判断是否产生新的可复用诊断步骤、修复步骤、风险点或系统特性；普通使用者侧保存为 `$HOME/.os-fix-skill-patches/` 下的本地 patch，开发者维护仓库时才更新 `$HOME/.os-fix-skill` 的 `references/` 或 `knowledge/`。
-- 功能增强确认完成后，主动判断是否产生新的可复用增强步骤、前置检查、回滚方式、验证步骤、风险边界或系统特性；普通使用者侧保存为 `$HOME/.os-enhance-skill-patches/` 下的本地 patch，开发者维护仓库时才更新 `$HOME/.os-enhance-skill` 的 `references/` 或 `knowledge/`。
+- 问题确认修复完成后，主动判断是否产生新的可复用诊断步骤、修复步骤、风险点或系统特性；默认保存为 `$HOME/.os-fix-skill-patches/` 下的本地 patch，只有显式进入开发者维护模式、确认 `osSkill.maintainer=true` 且 dry-run push 通过时，才更新 `$HOME/.os-fix-skill` 的 `references/` 或 `knowledge/` 并按当前环境规则提交维护仓库。
+- 功能增强确认完成后，主动判断是否产生新的可复用增强步骤、前置检查、回滚方式、验证步骤、风险边界或系统特性；默认保存为 `$HOME/.os-enhance-skill-patches/` 下的本地 patch，只有显式进入开发者维护模式、确认 `osSkill.maintainer=true` 且 dry-run push 通过时，才更新 `$HOME/.os-enhance-skill` 的 `references/` 或 `knowledge/` 并按当前环境规则提交维护仓库。
 - 执行任何 `git commit` 时，提交作者、提交正文和提交 trailer 不得包含 AI 相关署名或协作生成信息，例如 `Co-authored-by: Claude`、`Co-authored-by: Codex`、`Generated with ...`、`AI-assisted`、`🤖` 等。
 - 最终回复中说明本次经验是否已记录；如果已记录，给出对应 skill 文档路径或本地 patch 路径；如果没有记录，说明原因是没有新增可复用经验。
 - 经验文档使用中文。避免写入当前用户专属路径、用户名或一次性状态；需要出现用户目录时使用 `$HOME`、`<user>`、`<app-id>`、`<desktop-id>` 等通用占位符。
@@ -86,7 +86,7 @@ https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill
 3. 在全局提示词中加入规则：增强类任务先读取 $HOME/.os-enhance-skill/SKILL.md，再按 references/<scenario>.md 路由；随后只读取命中场景的 knowledge/<scenario>/README.md 和一个具体 knowledge 章节。如果当前任务不是桌面系统增强问题，或没有命中具体增强经验，不要遍历或预加载这个 skill。修复类问题只说明应切换到 $HOME/.os-fix-skill/SKILL.md；不要在本安装流程中安装或修改 fix skill。
 4. 当当前工作目录位于 $HOME/desktop-develop 或 /data/usershare/desktop-develop 下，且任务是独立工具或应用开发时，先读取最近的项目级 AGENTS.md；如果在工作区根目录，先读取 $HOME/desktop-develop/AGENTS.md 并按其中路由进入具体项目。不要把项目实现写到工作区根目录、$HOME/.os-fix-skill 或 $HOME/.os-enhance-skill。
 5. 系统级修复或增强前必须先运行 mm-cli -s 检查维护模式；非维护模式只允许诊断，不要实际修改 /usr、/etc、/opt、系统包、系统服务、设备节点、分区或 KSaf 策略。
-6. 增强确认完成后，如有新增可复用经验，普通使用者侧保存为 $HOME/.os-enhance-skill-patches/ 下的本地 patch，保持 $HOME/.os-enhance-skill 可继续 git pull --ff-only；拥有仓库写权限的开发者才按当前开发环境规则直接维护 $HOME/.os-enhance-skill。修复类经验属于 $HOME/.os-fix-skill，但本安装流程不安装或维护 fix skill。
+6. 增强确认完成后，如有新增可复用经验，默认保存为 $HOME/.os-enhance-skill-patches/ 下的本地 patch，保持 $HOME/.os-enhance-skill 可继续 git pull --ff-only；只有显式进入开发者维护模式、确认 $HOME/.os-enhance-skill 的 osSkill.maintainer=true 且 dry-run push 通过时，才按当前开发环境规则直接维护 $HOME/.os-enhance-skill。修复类经验属于 $HOME/.os-fix-skill，但本安装流程不安装或维护 fix skill。
 7. 执行任何 git commit 时，提交作者、提交正文和提交 trailer 不得包含 AI 相关署名或协作生成信息。
 8. 安装完成后验证：读取 $HOME/.os-enhance-skill/SKILL.md，并告诉我后续处理 KylinOS Desktop V11 系统增强任务时会先使用哪个 skill 入口。
 ```

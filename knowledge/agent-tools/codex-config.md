@@ -154,7 +154,7 @@ rg -n 'sandbox_mode|approval|approvals_reviewer|status_line|hide_full_access_war
 - 当用户处理 KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、AI 工具配置、UKUI 行为扩展、应用安装体验、网络策略、存储策略、硬件能力增强或源码级功能增强，且系统原本能工作但需要新增能力、改变默认行为或沉淀可复用增强流程时，默认使用 `$HOME/.os-enhance-skill/SKILL.md` 作为经验入口。
 - 开始处理系统修复问题前，先读取 `$HOME/.os-fix-skill/SKILL.md`，再按其中“参考文档路由”选择性读取 `references/<scenario>.md`；随后只读取命中场景的 `knowledge/<scenario>/README.md` 和一个具体 knowledge 章节。没有命中具体经验时，不要遍历整个 skill。
 - 开始处理系统功能增强前，先读取 `$HOME/.os-enhance-skill/SKILL.md`，再按其中“参考文档路由”选择性读取 `references/<scenario>.md`；随后只读取命中场景的 `knowledge/<scenario>/README.md` 和一个具体 knowledge 章节。没有命中具体经验时，不要遍历整个 skill。
-- 问题确认修复完成后，如有新的可复用经验，普通使用者侧保存为 `$HOME/.os-fix-skill-patches/` 下的本地 patch，开发者维护仓库时才更新 `$HOME/.os-fix-skill`；功能增强确认完成后，如有新的可复用经验，普通使用者侧保存为 `$HOME/.os-enhance-skill-patches/` 下的本地 patch，开发者维护仓库时才更新 `$HOME/.os-enhance-skill`。
+- 问题确认修复完成后，如有新的可复用经验，默认保存为 `$HOME/.os-fix-skill-patches/` 下的本地 patch，只有显式进入开发者维护模式、确认 `osSkill.maintainer=true` 且 dry-run push 通过时才更新 `$HOME/.os-fix-skill`；功能增强确认完成后，如有新的可复用经验，默认保存为 `$HOME/.os-enhance-skill-patches/` 下的本地 patch，只有开发者维护模式检查通过时才更新 `$HOME/.os-enhance-skill`。
 - 最终回复中应说明本次经验是否已记录；如果已记录，给出对应 skill 文档路径或本地 patch 路径；如果没有记录，说明原因是没有新增可复用经验。
 - 经验文档应使用中文，避免写入当前用户专属路径、用户名或一次性状态；需要出现用户目录时使用 `$HOME`、`<user>`、`<app-id>`、`<desktop-id>` 等通用占位符。
 - 桌面系统经验优先沉淀为可复用流程，不要把临时日志、长篇命令输出、聊天过程或只适用于单次现场的细节写入 skill。
