@@ -78,6 +78,38 @@ cd "$HOME"
 git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
 ```
 
+### Install by Pasting a Prompt into an AI Tool
+
+You can also paste the following prompt into Codex, Claude Code, or opencode and let the AI tool install and connect this knowledge base for you:
+
+```text
+Please install the KylinOS Desktop V11 enhancement knowledge base kylinos-v11-desktop-enhance-skill on this machine and connect it to the current AI tool's user-level rule file.
+
+Requirements:
+1. Check that git is available first.
+2. If $HOME/.os-enhance-skill does not exist, run:
+   git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
+3. If $HOME/.os-enhance-skill already exists and is a git repository, only use non-destructive updates:
+   git -C "$HOME/.os-enhance-skill" status -sb
+   git -C "$HOME/.os-enhance-skill" fetch --prune
+   git -C "$HOME/.os-enhance-skill" pull --ff-only
+   If there are local changes, branch divergence, or a fast-forward failure, do not overwrite anything; report the reason instead.
+4. If $HOME/.os-enhance-skill already exists but is not a git repository, do not delete or overwrite it; stop and explain why.
+5. Confirm that $HOME/.os-enhance-skill/SKILL.md exists.
+6. Create the parent directory for the current AI tool's user-level rule file if needed.
+7. Append the rules below to the current AI tool's user-level rule file. If you cannot identify the current tool, ask me first. Do not overwrite existing content, and do not append duplicate rules if equivalent rules already exist.
+
+Rule file locations:
+- Codex: $HOME/.codex/AGENTS.md
+- Claude Code: $HOME/.claude/CLAUDE.md
+- opencode: $HOME/.config/opencode/AGENTS.md
+
+Rules to append:
+When the user is working on KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, AI tool configuration, UKUI behavior extensions, application installation experience, network policy, storage policy, hardware capability enhancement, or source-level feature enhancement, and the system already works but needs new capability, changed default behavior, or a reusable enhancement workflow, use $HOME/.os-enhance-skill/SKILL.md as the default knowledge entry. Before handling a system enhancement task, read $HOME/.os-enhance-skill/SKILL.md, then follow its reference routing and selectively read references/<scenario>.md. Then read only the referenced knowledge/<scenario>/README.md and one concrete knowledge chapter that matches the current goal. If no concrete reference or knowledge chapter matches, do not traverse the whole skill. Only read $HOME/.os-enhance-skill/references/system.md when the goal is clearly about maintenance workflow, persistence strategy, or general local-customization rules. Follow "diagnose the requirement and impact first, design the enhancement second, verify and record rollback last". Before any system-level enhancement involving /usr, /etc, /opt, system packages, system services, device nodes, partitions, KSaf policies, or similar system paths, run mm-cli -s to check maintenance mode; only modify system paths, system services, or system packages after confirming the machine is in maintain mode.
+
+When finished, tell me the repository path, the rule file path you updated, and whether any update was skipped because of local changes or branch state.
+```
+
 Entry file:
 
 ```text
@@ -92,7 +124,7 @@ Claude Code: $HOME/.claude/CLAUDE.md
 opencode:    $HOME/.config/opencode/AGENTS.md
 ```
 
-After these rule files are connected to this knowledge base, KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, tool configuration, or source-level feature work can start from `$HOME/.os-enhance-skill/SKILL.md` and then follow `references/feature-enhancement/`. System repair issues are maintained in `$HOME/.os-fix-skill`.
+After these rule files are connected to this knowledge base, KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, tool configuration, or source-level feature work can start from `$HOME/.os-enhance-skill/SKILL.md` and then follow `references/`. System repair issues are maintained in `$HOME/.os-fix-skill`.
 
 Use a fixed session name for system enhancement, such as `os-enhance`:
 
@@ -126,32 +158,29 @@ $HOME/.os-enhance-skill/
 ├── SKILL.md
 ├── references/
 │   ├── README.md
-│   └── feature-enhancement/
-│       ├── README.md
-│       ├── system.md
-│       ├── applications.md
-│       ├── ukui.md
-│       ├── network.md
-│       ├── hardware.md
-│       ├── storage.md
-│       ├── agent-tools.md
-│       └── source-rebuild.md
+│   ├── system.md
+│   ├── applications.md
+│   ├── ukui.md
+│   ├── network.md
+│   ├── hardware.md
+│   ├── storage.md
+│   ├── agent-tools.md
+│   └── source-rebuild.md
 ├── knowledge/
 │   ├── README.md
-│   └── feature-enhancement/
-│       ├── agent-tools/
-│       ├── applications/
-│       ├── hardware/
-│       ├── network/
-│       ├── source-rebuild/
-│       ├── storage/
-│       ├── system/
-│       └── ukui/
+│   ├── agent-tools/
+│   ├── applications/
+│   ├── hardware/
+│   ├── network/
+│   ├── source-rebuild/
+│   ├── storage/
+│   ├── system/
+│   └── ukui/
 ├── README.md
 └── README.en.md
 ```
 
-`references/` is the scenario routing layer. Each reference contains scope, a short explanation, a knowledge entry, and minimal diagnostics. `knowledge/feature-enhancement/<scenario>/README.md` is the scenario index that routes to one concrete chapter. The concrete `<topic>.md` files contain background, pre-checks, enhancement steps, verification, rollback, and risk boundaries. Reusable source-level enhancements also keep patch sets and `PATCHSET.md` metadata under the same scenario's `patches/<feature-id>/` directory.
+`references/` is the scenario routing layer. Each reference contains scope, a short explanation, a knowledge entry, and minimal diagnostics. `knowledge/<scenario>/README.md` is the scenario index that routes to one concrete chapter. The concrete `<topic>.md` files contain background, pre-checks, enhancement steps, verification, rollback, and risk boundaries. Reusable source-level enhancements also keep patch sets and `PATCHSET.md` metadata under the same scenario's `patches/<feature-id>/` directory.
 
 Fixed loading path:
 
@@ -168,36 +197,36 @@ Configuring Codex, Claude Code, or opencode to load shared knowledge bases:
 
 ```text
 SKILL.md
--> references/feature-enhancement/agent-tools.md
--> knowledge/feature-enhancement/agent-tools/README.md
--> knowledge/feature-enhancement/agent-tools/global-prompts.md
+-> references/agent-tools.md
+-> knowledge/agent-tools/README.md
+-> knowledge/agent-tools/global-prompts.md
 ```
 
 Adding a custom command panel to UKUI global search:
 
 ```text
 SKILL.md
--> references/feature-enhancement/ukui.md
--> knowledge/feature-enhancement/ukui/README.md
--> knowledge/feature-enhancement/ukui/search-command-provider.md
+-> references/ukui.md
+-> knowledge/ukui/README.md
+-> knowledge/ukui/search-command-provider.md
 ```
 
 Adding Bing/Google search engines to UKUI global search:
 
 ```text
 SKILL.md
--> references/feature-enhancement/ukui.md
--> knowledge/feature-enhancement/ukui/README.md
--> knowledge/feature-enhancement/ukui/search-web-engine.md
+-> references/ukui.md
+-> knowledge/ukui/README.md
+-> knowledge/ukui/search-web-engine.md
 ```
 
 Planning a DATA-partition local source customization workspace:
 
 ```text
 SKILL.md
--> references/feature-enhancement/source-rebuild.md
--> knowledge/feature-enhancement/source-rebuild/README.md
--> knowledge/feature-enhancement/source-rebuild/local-customization-index.md
+-> references/source-rebuild.md
+-> knowledge/source-rebuild/README.md
+-> knowledge/source-rebuild/local-customization-index.md
 ```
 
 For repair tasks such as TUN failures, autostart not working, global-search errors, desktop AI residues, or damaged services, use `$HOME/.os-fix-skill/SKILL.md`.

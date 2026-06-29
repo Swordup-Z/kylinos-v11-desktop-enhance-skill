@@ -78,6 +78,38 @@ cd "$HOME"
 git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
 ```
 
+### 复制给 AI 工具执行安装
+
+也可以把下面整段复制给 Codex、Claude Code 或 opencode，让 AI 工具代为安装并接入用户级规则文件：
+
+```text
+请帮我在本机安装 KylinOS Desktop V11 系统功能增强经验库 kylinos-v11-desktop-enhance-skill，并接入当前 AI 工具的用户级规则文件。
+
+执行要求：
+1. 先检查 git 是否可用。
+2. 如果 $HOME/.os-enhance-skill 不存在，执行：
+   git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
+3. 如果 $HOME/.os-enhance-skill 已存在且是 git 仓库，只允许执行非破坏更新：
+   git -C "$HOME/.os-enhance-skill" status -sb
+   git -C "$HOME/.os-enhance-skill" fetch --prune
+   git -C "$HOME/.os-enhance-skill" pull --ff-only
+   如果存在本地改动、分支分叉或 fast-forward 失败，不要覆盖，直接说明原因。
+4. 如果 $HOME/.os-enhance-skill 已存在但不是 git 仓库，不要删除或覆盖，直接停止并说明原因。
+5. 确认 $HOME/.os-enhance-skill/SKILL.md 存在。
+6. 必要时创建当前 AI 工具用户级规则文件的父目录。
+7. 将下面规则追加到当前 AI 工具的用户级规则文件；如果无法判断当前工具，则优先询问我。不要覆盖已有内容，已有同等规则时不要重复追加。
+
+规则文件位置：
+- Codex: $HOME/.codex/AGENTS.md
+- Claude Code: $HOME/.claude/CLAUDE.md
+- opencode: $HOME/.config/opencode/AGENTS.md
+
+需要追加的规则：
+当用户处理 KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、AI 工具配置、UKUI 行为扩展、应用安装体验、网络策略、存储策略、硬件能力增强或源码级功能增强，且系统原本能工作但需要新增能力、改变默认行为或沉淀可复用增强流程时，默认使用 $HOME/.os-enhance-skill/SKILL.md 作为经验入口。开始处理系统功能增强前，先读取 $HOME/.os-enhance-skill/SKILL.md，再按其中“参考文档路由”选择性读取 references/<scenario>.md；随后只读取该 reference 指向的 knowledge/<scenario>/README.md，以及与当前目标匹配的一个具体 knowledge 章节。如果没有命中具体 reference 或 knowledge 章节，不要遍历整个 skill；只有目标明确属于维护流程、持久化策略或本地客制化通用规则时，才读取 $HOME/.os-enhance-skill/references/system.md。处理任务时遵循“先诊断需求和影响面、再设计增强方案、最后验证和记录回滚”；涉及 /usr、/etc、/opt、系统包、系统服务、设备节点、分区、KSaf 策略等系统级增强前，必须先运行 mm-cli -s 检查维护模式，只有确认当前是 maintain mode 才允许实际修改系统路径、系统服务或系统包。
+
+完成后请告诉我仓库路径、已更新的规则文件路径，以及是否因为已有本地改动或分支状态跳过了更新。
+```
+
 入口文件是：
 
 ```text
@@ -92,7 +124,7 @@ Claude Code: $HOME/.claude/CLAUDE.md
 opencode:    $HOME/.config/opencode/AGENTS.md
 ```
 
-把这些规则文件接入本经验库后，KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、工具配置或源码级功能增强可从 `$HOME/.os-enhance-skill/SKILL.md` 进入，再按其中的 `references/feature-enhancement/` 路由继续查阅。系统修复问题由 `$HOME/.os-fix-skill` 维护。
+把这些规则文件接入本经验库后，KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、工具配置或源码级功能增强可从 `$HOME/.os-enhance-skill/SKILL.md` 进入，再按其中的 `references/` 路由继续查阅。系统修复问题由 `$HOME/.os-fix-skill` 维护。
 
 系统增强使用固定会话名，例如 `os-enhance`。之后遇到系统增强任务时，恢复同一个会话继续处理：
 
@@ -126,32 +158,29 @@ $HOME/.os-enhance-skill/
 ├── SKILL.md
 ├── references/
 │   ├── README.md
-│   └── feature-enhancement/
-│       ├── README.md
-│       ├── system.md
-│       ├── applications.md
-│       ├── ukui.md
-│       ├── network.md
-│       ├── hardware.md
-│       ├── storage.md
-│       ├── agent-tools.md
-│       └── source-rebuild.md
+│   ├── system.md
+│   ├── applications.md
+│   ├── ukui.md
+│   ├── network.md
+│   ├── hardware.md
+│   ├── storage.md
+│   ├── agent-tools.md
+│   └── source-rebuild.md
 ├── knowledge/
 │   ├── README.md
-│   └── feature-enhancement/
-│       ├── agent-tools/
-│       ├── applications/
-│       ├── hardware/
-│       ├── network/
-│       ├── source-rebuild/
-│       ├── storage/
-│       ├── system/
-│       └── ukui/
+│   ├── agent-tools/
+│   ├── applications/
+│   ├── hardware/
+│   ├── network/
+│   ├── source-rebuild/
+│   ├── storage/
+│   ├── system/
+│   └── ukui/
 ├── README.md
 └── README.en.md
 ```
 
-`references/` 是场景入口和策略路由层，包含适用场景、简短说明、知识入口和最小诊断。`knowledge/feature-enhancement/<scenario>/README.md` 是场景内索引，负责把增强需求继续路由到具体章节。具体 `<topic>.md` 保存背景、前置检查、增强步骤、验证、回滚和风险边界。通过源码修改实现的可复用增强还会在同场景 `patches/<feature-id>/` 下保存 patch 集和 `PATCHSET.md` 元数据。
+`references/` 是场景入口和策略路由层，包含适用场景、简短说明、知识入口和最小诊断。`knowledge/<scenario>/README.md` 是场景内索引，负责把增强需求继续路由到具体章节。具体 `<topic>.md` 保存背景、前置检查、增强步骤、验证、回滚和风险边界。通过源码修改实现的可复用增强还会在同场景 `patches/<feature-id>/` 下保存 patch 集和 `PATCHSET.md` 元数据。
 
 固定加载链路：
 
@@ -168,36 +197,36 @@ $HOME/.os-enhance-skill/
 
 ```text
 SKILL.md
--> references/feature-enhancement/agent-tools.md
--> knowledge/feature-enhancement/agent-tools/README.md
--> knowledge/feature-enhancement/agent-tools/global-prompts.md
+-> references/agent-tools.md
+-> knowledge/agent-tools/README.md
+-> knowledge/agent-tools/global-prompts.md
 ```
 
 给 UKUI 全局搜索增加自定义命令面板：
 
 ```text
 SKILL.md
--> references/feature-enhancement/ukui.md
--> knowledge/feature-enhancement/ukui/README.md
--> knowledge/feature-enhancement/ukui/search-command-provider.md
+-> references/ukui.md
+-> knowledge/ukui/README.md
+-> knowledge/ukui/search-command-provider.md
 ```
 
 给 UKUI 全局搜索增加 Bing/Google 等搜索引擎：
 
 ```text
 SKILL.md
--> references/feature-enhancement/ukui.md
--> knowledge/feature-enhancement/ukui/README.md
--> knowledge/feature-enhancement/ukui/search-web-engine.md
+-> references/ukui.md
+-> knowledge/ukui/README.md
+-> knowledge/ukui/search-web-engine.md
 ```
 
 规划 DATA 分区本地源码客制化工作区：
 
 ```text
 SKILL.md
--> references/feature-enhancement/source-rebuild.md
--> knowledge/feature-enhancement/source-rebuild/README.md
--> knowledge/feature-enhancement/source-rebuild/local-customization-index.md
+-> references/source-rebuild.md
+-> knowledge/source-rebuild/README.md
+-> knowledge/source-rebuild/local-customization-index.md
 ```
 
 如果任务是 TUN 失败、开机自启动不生效、全局搜索异常、AI 组件残留、系统服务损坏等修复类问题，请使用 `$HOME/.os-fix-skill/SKILL.md`。
