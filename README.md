@@ -73,14 +73,9 @@ opencode
 
 ## 安装本经验库
 
-```bash
-cd "$HOME"
-git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
-```
-
 ### 复制给 AI 工具执行安装
 
-也可以把下面整段复制给 Codex、Claude Code 或 opencode，让 AI 工具代为安装并接入用户级规则文件：
+把下面整段复制给 Codex、Claude Code 或 opencode，让 AI 工具代为安装并接入用户级规则文件：
 
 ```text
 请帮我在本机安装 KylinOS Desktop V11 系统功能增强经验库 kylinos-v11-desktop-enhance-skill，并接入当前 AI 工具的用户级规则文件。
@@ -110,13 +105,27 @@ git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$H
 完成后请告诉我仓库路径、已更新的规则文件路径，以及是否因为已有本地改动或分支状态跳过了更新。
 ```
 
+### 手动安装
+
+先克隆或更新本经验库。已有目录时不要覆盖本地改动；如果 `git pull --ff-only` 失败，先处理分支状态再继续。
+
+```bash
+if [ ! -d "$HOME/.os-enhance-skill/.git" ]; then
+  git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
+else
+  git -C "$HOME/.os-enhance-skill" status -sb
+  git -C "$HOME/.os-enhance-skill" fetch --prune
+  git -C "$HOME/.os-enhance-skill" pull --ff-only
+fi
+```
+
 入口文件是：
 
 ```text
 $HOME/.os-enhance-skill/SKILL.md
 ```
 
-常见工具的用户级规则文件位置：
+选择当前 AI 工具的用户级规则文件，必要时先创建父目录：
 
 ```text
 Codex:       $HOME/.codex/AGENTS.md
@@ -124,7 +133,24 @@ Claude Code: $HOME/.claude/CLAUDE.md
 opencode:    $HOME/.config/opencode/AGENTS.md
 ```
 
-把这些规则文件接入本经验库后，KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、工具配置或源码级功能增强可从 `$HOME/.os-enhance-skill/SKILL.md` 进入，再按其中的 `references/` 路由继续查阅。系统修复问题由 `$HOME/.os-fix-skill` 维护。
+例如 Codex：
+
+```bash
+mkdir -p "$HOME/.codex"
+${EDITOR:-vi} "$HOME/.codex/AGENTS.md"
+```
+
+将下面规则追加到对应规则文件末尾。不要覆盖已有内容；如果已有等价规则，不要重复追加。
+
+```text
+当用户处理 KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、AI 工具配置、UKUI 行为扩展、应用安装体验、网络策略、存储策略、硬件能力增强或源码级功能增强，且系统原本能工作但需要新增能力、改变默认行为或沉淀可复用增强流程时，默认使用 $HOME/.os-enhance-skill/SKILL.md 作为经验入口。
+
+开始处理系统功能增强前，先读取 $HOME/.os-enhance-skill/SKILL.md，再按其中“参考文档路由”选择性读取 references/<scenario>.md；随后只读取该 reference 指向的 knowledge/<scenario>/README.md，以及与当前目标匹配的一个具体 knowledge 章节。如果没有命中具体 reference 或 knowledge 章节，不要遍历整个 skill；只有目标明确属于维护流程、持久化策略或本地客制化通用规则时，才读取 $HOME/.os-enhance-skill/references/system.md。
+
+处理任务时遵循“先诊断需求和影响面、再设计增强方案、最后验证和记录回滚”；涉及 /usr、/etc、/opt、系统包、系统服务、设备节点、分区、KSaf 策略等系统级增强前，必须先运行 mm-cli -s 检查维护模式，只有确认当前是 maintain mode 才允许实际修改系统路径、系统服务或系统包。
+```
+
+配置完成后，KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、工具配置或源码级功能增强可从 `$HOME/.os-enhance-skill/SKILL.md` 进入，再按其中的 `references/` 路由继续查阅。系统修复问题由 `$HOME/.os-fix-skill` 维护。
 
 系统增强使用固定会话名，例如 `os-enhance`。之后遇到系统增强任务时，恢复同一个会话继续处理：
 

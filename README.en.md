@@ -73,14 +73,9 @@ If your system policy does not allow `curl | sh` or `curl | bash`, open the offi
 
 ## Install This Knowledge Base
 
-```bash
-cd "$HOME"
-git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
-```
-
 ### Install by Pasting a Prompt into an AI Tool
 
-You can also paste the following prompt into Codex, Claude Code, or opencode and let the AI tool install and connect this knowledge base for you:
+Paste the following prompt into Codex, Claude Code, or opencode and let the AI tool install and connect this knowledge base for you:
 
 ```text
 Please install the KylinOS Desktop V11 enhancement knowledge base kylinos-v11-desktop-enhance-skill on this machine and connect it to the current AI tool's user-level rule file.
@@ -110,13 +105,27 @@ When the user is working on KylinOS Desktop V11 feature enhancement, local custo
 When finished, tell me the repository path, the rule file path you updated, and whether any update was skipped because of local changes or branch state.
 ```
 
+### Manual Install
+
+Clone or update this knowledge base first. Do not overwrite local changes in an existing directory. If `git pull --ff-only` fails, resolve the branch state before continuing.
+
+```bash
+if [ ! -d "$HOME/.os-enhance-skill/.git" ]; then
+  git clone https://github.com/Swordup-Z/kylinos-v11-desktop-enhance-skill.git "$HOME/.os-enhance-skill"
+else
+  git -C "$HOME/.os-enhance-skill" status -sb
+  git -C "$HOME/.os-enhance-skill" fetch --prune
+  git -C "$HOME/.os-enhance-skill" pull --ff-only
+fi
+```
+
 Entry file:
 
 ```text
 $HOME/.os-enhance-skill/SKILL.md
 ```
 
-Common user-level rule files:
+Choose the user-level rule file for the current AI tool. Create its parent directory first if needed:
 
 ```text
 Codex:       $HOME/.codex/AGENTS.md
@@ -124,7 +133,24 @@ Claude Code: $HOME/.claude/CLAUDE.md
 opencode:    $HOME/.config/opencode/AGENTS.md
 ```
 
-After these rule files are connected to this knowledge base, KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, tool configuration, or source-level feature work can start from `$HOME/.os-enhance-skill/SKILL.md` and then follow `references/`. System repair issues are maintained in `$HOME/.os-fix-skill`.
+For Codex, for example:
+
+```bash
+mkdir -p "$HOME/.codex"
+${EDITOR:-vi} "$HOME/.codex/AGENTS.md"
+```
+
+Append the following rules to the end of the selected rule file. Do not overwrite existing content, and do not append duplicates if equivalent rules already exist.
+
+```text
+When the user is working on KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, AI tool configuration, UKUI behavior extensions, application installation experience, network policy, storage policy, hardware capability enhancement, or source-level feature enhancement, and the system already works but needs new capability, changed default behavior, or a reusable enhancement workflow, use $HOME/.os-enhance-skill/SKILL.md as the default knowledge entry.
+
+Before handling a system enhancement task, read $HOME/.os-enhance-skill/SKILL.md, then follow its reference routing and selectively read references/<scenario>.md. Then read only the referenced knowledge/<scenario>/README.md and one concrete knowledge chapter that matches the current goal. If no concrete reference or knowledge chapter matches, do not traverse the whole skill. Only read $HOME/.os-enhance-skill/references/system.md when the goal is clearly about maintenance workflow, persistence strategy, or general local-customization rules.
+
+Follow "diagnose the requirement and impact first, design the enhancement second, verify and record rollback last". Before any system-level enhancement involving /usr, /etc, /opt, system packages, system services, device nodes, partitions, KSaf policies, or similar system paths, run mm-cli -s to check maintenance mode; only modify system paths, system services, or system packages after confirming the machine is in maintain mode.
+```
+
+After configuration, KylinOS Desktop V11 feature enhancement, local customization, default-behavior changes, tool configuration, or source-level feature work can start from `$HOME/.os-enhance-skill/SKILL.md` and then follow `references/`. System repair issues are maintained in `$HOME/.os-fix-skill`.
 
 Use a fixed session name for system enhancement, such as `os-enhance`:
 
