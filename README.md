@@ -100,7 +100,7 @@ opencode
 - opencode: $HOME/.config/opencode/AGENTS.md
 
 需要追加的规则：
-当用户处理 KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、AI 工具配置、UKUI 行为扩展、应用安装体验、网络策略、存储策略、硬件能力增强或源码级功能增强，且系统原本能工作但需要新增能力、改变默认行为或沉淀可复用增强流程时，默认使用 $HOME/.os-enhance-skill/SKILL.md 作为经验入口。开始处理系统功能增强前，先读取 $HOME/.os-enhance-skill/SKILL.md，再按其中“参考文档路由”选择性读取 references/<scenario>.md；随后只读取该 reference 指向的 knowledge/<scenario>/README.md，以及与当前目标匹配的一个具体 knowledge 章节。如果没有命中具体 reference 或 knowledge 章节，不要遍历整个 skill；只有目标明确属于维护流程、持久化策略或本地客制化通用规则时，才读取 $HOME/.os-enhance-skill/references/system.md。处理任务时遵循“先诊断需求和影响面、再设计增强方案、最后验证和记录回滚”；涉及 /usr、/etc、/opt、系统包、系统服务、设备节点、分区、KSaf 策略等系统级增强前，必须先运行 mm-cli -s 检查维护模式，只有确认当前是 maintain mode 才允许实际修改系统路径、系统服务或系统包。
+当用户处理 KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、AI 工具配置、UKUI 行为扩展、应用安装体验、网络策略、存储策略、硬件能力增强或源码级功能增强，且系统原本能工作但需要新增能力、改变默认行为或沉淀可复用增强流程时，默认使用 $HOME/.os-enhance-skill/SKILL.md 作为经验入口。开始处理系统功能增强前，先读取 $HOME/.os-enhance-skill/SKILL.md，再按其中“参考文档路由”选择性读取 references/<scenario>.md；随后只读取该 reference 指向的 knowledge/<scenario>/README.md，以及与当前目标匹配的一个具体 knowledge 章节。如果没有命中具体 reference 或 knowledge 章节，不要遍历整个 skill；只有目标明确属于维护流程、持久化策略或本地客制化通用规则时，才读取 $HOME/.os-enhance-skill/references/system.md。处理任务时遵循“先诊断需求和影响面、再设计增强方案、最后验证和记录回滚”；涉及 /usr、/etc、/opt、系统包、系统服务、设备节点、分区、KSaf 策略等系统级增强前，必须先运行 mm-cli -s 检查维护模式，只有确认当前是 maintain mode 才允许实际修改系统路径、系统服务或系统包。普通使用者确认产生新增可复用增强经验时，不要直接修改或提交 $HOME/.os-enhance-skill；应生成 $HOME/.os-enhance-skill-patches/ 下的本地 patch，保持 skill 仓库可继续 git pull --ff-only。拥有仓库写权限的开发者按当前开发环境的全局提示词或项目规则维护仓库。
 
 完成后请告诉我仓库路径、已更新的规则文件路径，以及是否因为已有本地改动或分支状态跳过了更新。
 ```
@@ -148,9 +148,13 @@ ${EDITOR:-vi} "$HOME/.codex/AGENTS.md"
 开始处理系统功能增强前，先读取 $HOME/.os-enhance-skill/SKILL.md，再按其中“参考文档路由”选择性读取 references/<scenario>.md；随后只读取该 reference 指向的 knowledge/<scenario>/README.md，以及与当前目标匹配的一个具体 knowledge 章节。如果没有命中具体 reference 或 knowledge 章节，不要遍历整个 skill；只有目标明确属于维护流程、持久化策略或本地客制化通用规则时，才读取 $HOME/.os-enhance-skill/references/system.md。
 
 处理任务时遵循“先诊断需求和影响面、再设计增强方案、最后验证和记录回滚”；涉及 /usr、/etc、/opt、系统包、系统服务、设备节点、分区、KSaf 策略等系统级增强前，必须先运行 mm-cli -s 检查维护模式，只有确认当前是 maintain mode 才允许实际修改系统路径、系统服务或系统包。
+
+普通使用者确认产生新增可复用增强经验时，不要直接修改或提交 $HOME/.os-enhance-skill；应生成 $HOME/.os-enhance-skill-patches/ 下的本地 patch，保持 skill 仓库可继续 git pull --ff-only。拥有仓库写权限的开发者按当前开发环境的全局提示词或项目规则维护仓库。
 ```
 
 配置完成后，KylinOS Desktop V11 系统功能增强、本地客制化、默认行为调整、工具配置或源码级功能增强可从 `$HOME/.os-enhance-skill/SKILL.md` 进入，再按其中的 `references/` 路由继续查阅。系统修复问题由 `$HOME/.os-fix-skill` 维护。
+
+普通使用者的本地新增经验建议保存到 `$HOME/.os-enhance-skill-patches/`，而不是直接提交到 `$HOME/.os-enhance-skill`。这样 skill 仓库可以持续 `git pull --ff-only` 拉取上游更新；开发者维护仓库时再把 patch 内容整理进 `references/` 或 `knowledge/` 并按本机全局规则处理后续仓库维护。
 
 系统增强使用固定会话名，例如 `os-enhance`。之后遇到系统增强任务时，恢复同一个会话继续处理：
 
